@@ -1,0 +1,108 @@
+
+.container{
+    background-color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.quiz-card{
+    width: 50%;
+    max-width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 20px; 
+    color: #1D1F33;
+}
+
+.quiz-card-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quiz-card .correct-count{
+    color: rgba(0, 166, 0, 0.915);
+    font-size: 18px;
+}
+
+/* .quiz-options{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    gap:20px;
+}
+*/
+
+.quiz-option{
+    flex-basis: 49%;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+} 
+
+ul{
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap:10px;
+
+}
+
+ul li{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  
+}
+.btn{
+    border: 0;
+    padding: 20px 50px;
+    width: 100%;
+    background-color: #1D1F33;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn.selected{
+    background-color: #2c326a;
+}
+
+.btn.correct{
+    background-color: rgba(0, 166, 0, 0.915);
+}
+
+.btn.incorrect{
+    background-color: rgba(186, 4, 4, 0.915);
+}
+
+.btn:hover{
+    background-color: #2c326a;
+}
+
+.nxt-btn{
+    border: 0;
+    background-color: #EA1456;
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+
+.nxt-btn:hover{
+    background-color: #cc104c;
+}
+
+.btn-group{
+    text-align: right;
+}
+
+.result{
+    text-align: center;
+}
+
