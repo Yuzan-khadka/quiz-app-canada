@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../assets/css/quiz.css";
 import data from "../components/data.js";
 
-function Quiz() {
+const Quiz = () => {
   const [value, setValue] = useState("");
   const [selectedBtn, setSelectedBtn] = useState("");
   const [count, setCount] = useState(0);
@@ -12,7 +12,24 @@ function Quiz() {
   const [btnDisable, setBtnDisable] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
 
-  const [quizzes, setQuizzes] = useState(data);
+
+  const [quizzes, setQuizzes] = useState(shuffleQuestionsAndOptions(data));
+
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function shuffleQuestionsAndOptions(quizzes) {
+    const shuffledQuizzes = shuffleArray([...quizzes]);
+    return shuffledQuizzes.map((quiz) => ({
+      ...quiz,
+      options: shuffleArray([...quiz.options]),
+    }));
+  }
 
   const handleSelectOption = (e, btn) => {
     setValue(e.target.innerHTML);
@@ -30,7 +47,7 @@ function Quiz() {
     }
   };
 
-  const handleNext = (selectedAns, count) => {
+  const handleNext = () => {
     setCount((prev) => prev + 1);
     setValue("");
     setSelectedBtn("");
@@ -51,66 +68,71 @@ function Quiz() {
     }
     setBtnDisable(true);
     setShowBtn(false);
+  };
 
+  const handleRestart = () => {
+    console.log("clicked");
+    setCount(0);
+    setCorrectCount(0);
+    setQuizzes(shuffleQuestionsAndOptions(data));
   };
 
   return (
     <div className="container">
       <div className="quiz-card">
-          {count < quizzes.length ? 
+        {count < quizzes.length ? (
           <>
-        <div className="quiz-card-top">
-          
-          <h4>
-          Question {count + 1} / {quizzes.length}
-        </h4>
-
-        <h4>
-            Correct : <span className="correct-count">{correctCount}</span>
-        </h4>
-
-        </div>
-        <h2>{quizzes[count].ques}</h2>
-        <ul className="quiz-options">
-          {quizzes[count].options.map((option, index) => {
-            return (
-              <li key={index} className="quiz-option">
+            <div className="quiz-card-top">
+              <h4>
+                Question {count + 1} / {quizzes.length}
+              </h4>
+              <h4>
+                Correct : <span className="correct-count">{correctCount}</span>
+              </h4>
+            </div>
+            <h2>{quizzes[count].ques}</h2>
+            <ul className="quiz-options">
+              {quizzes[count].options.map((option, index) => (
+                <li key={index} className="quiz-option">
+                  <button
+                    className={getBtnClass(index)}
+                    onClick={(e) => handleSelectOption(e, index)}
+                    disabled={btnDisable}
+                  >
+                    {option}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="btn-group">
+              {showBtn ? (
                 <button
-                  className={getBtnClass(index)}
-                  onClick={(e) => handleSelectOption(e, index)}
-                  disabled = {btnDisable}
+                  className="nxt-btn"
+                  onClick={() => handleConfirm(value, selectedBtn)}
                 >
-                  {option}
+                  Are you sure?
                 </button>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="btn-group">
-          {showBtn ? (
-            <button
-              className="nxt-btn"
-              onClick={() => handleConfirm(value, selectedBtn)}
-            >
-              Are you sure?
-            </button>
-          ) : null}
-          <button className="nxt-btn" onClick={() => handleNext(count)} disabled = {!btnDisable}>
-            Next
-          </button>
-          
-          </div>
+              ) : null}
+              <button
+                className="nxt-btn"
+                onClick={() => handleNext(count)}
+                disabled={!btnDisable}
+              >
+                Next
+              </button>
+            </div>
           </>
-          
-          :
-          
-           <h2 className="result"> Your score is : {correctCount}</h2>
-          }
-         
-        
+        ) : (
+          <div>
+            <h2 className="result"> Your score is : {correctCount}</h2>
+            <button className="nxt-btn" onClick={handleRestart}>
+              Start again
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Quiz;
